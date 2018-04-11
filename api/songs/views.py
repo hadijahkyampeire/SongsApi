@@ -30,5 +30,50 @@ class SongsListView(Resource):
         response={'song_items':items}
         return make_response(jsonify(response), 200) 
 
+class SongDetailsView(Resource):
+    """song details"""
+    def get(self, song_id):
+        song= Songs.query.filter_by(id=song_id).first()
+        if not song:
+            return make_response(jsonify({
+                'message':'no song found by id'
+            }), 404)
+        response = {
+            'song':{
+                'id':song.id,
+                'title':song.title,
+                'artist':song.artist
+            }
+        }
+        return make_response(jsonify(response), 200)
 
+    def delete(self, song_id):
+        song = Songs.query.filter_by(id=song_id).first()
+        if not song:
+            return make_response(jsonify({
+                'message':'no song found by id'
+            }), 404)
+        song.delete()
+        return make_response(jsonify({
+            'message':'Song successfully deleted'
+        }), 200)
+
+    @use_args(songs_args, locations={'json', 'form'})
+    def put(self, args, song_id):
+        song = Songs.query.filter_by(id=song_id).first()
+        if not song:
+            return make_response(jsonify({
+                'message':'no song found by id'
+            }), 404)
+        song.title=args['title']
+        song.artist= args['artist']
+        song.save()
+        response = {
+            'song':{
+                'id':song.id,
+                'title':song.title,
+                'artist':song.artist
+            }
+        }
+        return make_response(jsonify(response), 201)
 
