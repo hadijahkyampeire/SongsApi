@@ -5,7 +5,7 @@ python:
 services:
   - postgresql
 before_script:
-  - created test_db
+  - createdb test_db
 
 # command to install dependencies
 install:
