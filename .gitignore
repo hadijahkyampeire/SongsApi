@@ -1,2 +1,4 @@
 .vscode/
 songsvenv/
+htmlcov/
+__pycache__/
