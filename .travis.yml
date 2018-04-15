@@ -1,0 +1,20 @@
+language: python
+python:
+  - "3.6.4"
+
+services:
+  - postgresql
+before_script:
+  - createdb test_db
+
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - pip install coveralls --quiet
+
+# command to run tests
+script: 
+  - nosetests -v --with-coverage --cover-package=api
+# command for coverage reporting
+after_success: 
+  - coveralls
