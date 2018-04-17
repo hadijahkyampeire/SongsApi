@@ -5,7 +5,7 @@ python:
 services:
   - postgresql
 before_script:
-  - psql -c "CREATE ROLE postgres PASSWORD '0000' CREATEDB CREATEROLE INHERIT LOGIN;" -U postgres
+  - psql -c "CREATE ROLE songs PASSWORD '0000' CREATEDB CREATEROLE INHERIT LOGIN;" -U postgres
   - psql -c "create database song;" -U postgres
   - python run.py db init
   - python run.py db migrate
