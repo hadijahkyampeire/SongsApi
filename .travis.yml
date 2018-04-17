@@ -4,16 +4,17 @@ python:
 
 services:
   - postgresql
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - pip install coveralls --quiet
+
 before_script:
   - psql -c "CREATE ROLE songs PASSWORD '0000' CREATEDB CREATEROLE INHERIT LOGIN;" -U postgres
   - psql -c "create database song;" -U postgres
   - python run.py db init
   - python run.py db migrate
   - python run.py db upgrade
-# command to install dependencies
-install:
-  - pip install -r requirements.txt
-  - pip install coveralls --quiet
 
 # command to run tests
 script: 
