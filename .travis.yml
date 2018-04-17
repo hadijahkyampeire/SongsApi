@@ -12,9 +12,9 @@ install:
 before_script:
   - psql -c "CREATE ROLE songs PASSWORD '0000' CREATEDB CREATEROLE INHERIT LOGIN;" -U postgres
   - psql -c "create database song;" -U postgres
-  - python manage.py db init
-  - python manage.py db migrate
-  - python manage.py db upgrade
+  # - python manage.py db init
+  # - python manage.py db migrate
+  # - python manage.py db upgrade
 
 # command to run tests
 script: 
