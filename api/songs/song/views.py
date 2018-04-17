@@ -1,8 +1,8 @@
 from flask import jsonify, make_response
 from flask_restful import Resource
 from webargs.flaskparser import use_args
-from .args import songs_args
-from .models import Songs
+from api.songs.args import songs_args
+from api.songs.models import Songs
 
 class SongsListView(Resource):
     """songs view"""

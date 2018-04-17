@@ -13,5 +13,5 @@ app.config.from_object(app_config.get(config_name))
 
 db = SQLAlchemy(app) 
 
-from api.songs import song
+from api.songs.song import song
 app.register_blueprint(song)

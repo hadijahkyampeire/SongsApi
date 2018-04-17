@@ -9,7 +9,6 @@ class SongsTestCase(unittest.TestCase):
 
     def setUp(self):
         # binds the app to the current context
-        self.app = config_name="testing"
         self.client = app.test_client()
         self.song = {'title': 'queen of my heart', 'artist':'westlife boys'}
         with app.app_context():
