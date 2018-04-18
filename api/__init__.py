@@ -15,3 +15,5 @@ db = SQLAlchemy(app)
 
 from api.songs.song import song
 app.register_blueprint(song)
+from api.songs.auth import auth
+app.register_blueprint(auth)

@@ -11,7 +11,7 @@ class User(db.Model):
     password = db.Column(db.String(256), nullable=False)
     songs = db.relationship(
         'Songs', order_by='Songs.id', cascade="all, delete-orphan", lazy='dynamic')
-
+        
     def __init__(self, email, password, username):
         """Initialize the user with an email and a password."""
         self.email = email
@@ -33,7 +33,6 @@ class User(db.Model):
 
     def generate_token(self, user_id):
         """ Generates the access token"""
-
         try:
             # set up a payload with an expiration time
             payload = {
@@ -48,7 +47,6 @@ class User(db.Model):
                 algorithm='HS256'
             )
             return jwt_string
-
         except Exception as e:
             # return an error in string format if an exception occurs
             return str(e)

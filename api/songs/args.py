@@ -9,3 +9,12 @@ songs_args = {
 songs_id_arg = {
     'id':fields.Int()
 }
+user_args ={
+    'username':fields.Str(required=True, validate=validate.Length(5)),
+    'email':fields.Str(required=True, validate=validate.Email()),
+    'password':fields.Str(required=True, validate=validate.Length(7))
+}
+login_args ={
+    'email':fields.Str(required=True, validate=validate.Email()),
+    'password':fields.Str(required=True, validate=validate.Length(7))
+}
