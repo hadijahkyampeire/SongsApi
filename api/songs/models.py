@@ -1,4 +1,6 @@
 import jwt
+import datetime
+from datetime import timedelta, datetime
 from api import db
 from flask import current_app
 from flask_bcrypt import Bcrypt
@@ -43,9 +45,9 @@ class User(db.Model):
             # create the byte string token using the payload and the SECRET key
             jwt_string = jwt.encode(
                 payload,
-                current_app.config.get('SECRET'),
+                current_app.config.get('SECRET_KEY'),
                 algorithm='HS256'
-            )
+            ).decode('utf-8')
             return jwt_string
         except Exception as e:
             # return an error in string format if an exception occurs
@@ -56,7 +58,7 @@ class User(db.Model):
         """Decodes the access token from the Authorization header."""
         try:
             # try to decode the token using our SECRET variable
-            payload = jwt.decode(token, current_app.config.get('SECRET'))
+            payload = jwt.decode(token, current_app.config.get('SECRET_KEY'))
             return payload['sub']
         except jwt.ExpiredSignatureError:
             # the token is expired, return an error string
