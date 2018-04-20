@@ -13,7 +13,6 @@ omit =
       *decimal.py*
       *encodings/*
       *hmac.py*
-      *html/*
       *asyncio/*
       *concurrent/*
       *multiprocessing/*
@@ -21,7 +20,11 @@ omit =
       *numbers.py*
       *pydoc.py*
       *http/*
-      *instance/__init__.py*
+      *api/songs/auth/__init__.py*
+      *api/songs/args.py*
+      *api/songs/song/__init__.py*
+      *api/__init__.py*
+      *api/config.py*
       *app/models.py*
       *tests/*
 

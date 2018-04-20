@@ -46,6 +46,18 @@ class AuthTestCase(unittest.TestCase):
         self.assertEqual(login_res.status_code, 200)
         self.assertTrue(result['access_token'])
 
+    def test_user_with_wrong_credentials_cannot_login(self):
+        """Test user with wrong credentials"""
+        res = self.client.post('/auth/register',data=self.user)
+        user_data={'email':'zsh@gmail.com', 'password':'000000000'}
+        login_res = self.client.post('/auth/login',data=user_data)
+        result = json.loads(login_res.data.decode())
+        self.assertEqual(result['message'], "Invalid email or password, Please try again")
+        # Assert that the status code is equal to 401
+        self.assertEqual(login_res.status_code, 401)
+
+
+
     def tearDown(self):
         with app.app_context():
             # create all database tables

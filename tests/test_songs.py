@@ -116,6 +116,35 @@ class SongsTestCase(unittest.TestCase):
             headers=dict(Authorization="Bearer " + access_token))
         self.assertEqual(result.status_code, 404)
     
+    def test_user_cannot_add_songs_with_no_token(self):
+        """Test APi handles error when posting with no token"""
+        result = self.client.post('/song/songs', data=self.song)
+        self.assertEqual(result.status_code, 401)
+
+    def test_user_cannot_get_songs_with_no_token(self):
+        """Test APi handles error when getting songs with no token"""
+        add = self.client.post('/song/songs', data=self.song)
+        result = self.client.get('/song/songs')
+        self.assertEqual(result.status_code, 401)
+
+    def test_user_cannot_edit_songs_with_no_token(self):
+        """Test APi handles error when puting with no token"""
+        res = self.client.post('/song/songs', data=self.song)
+        new_data={'title':'one step','artist':'beyonce'}
+        result = self.client.put('/song/songs/1', data=new_data)
+        self.assertEqual(result.status_code, 401)
+
+    def test_user_cannot_get_song_by_id_with_no_token(self):
+        """Test APi handles error when getting a song with no token"""
+        result1 = self.client.post('/song/songs', data=self.song)
+        result = self.client.get('/song/songs/1', data=self.song)
+        self.assertEqual(result.status_code, 401)
+
+    def test_user_cannot_delete_songs_with_no_token(self):
+        """Test APi handles error when delete with no token"""
+        result1 = self.client.post('/song/songs', data=self.song)
+        result = self.client.delete('/song/songs/1')
+        self.assertEqual(result.status_code, 401)
     def tearDown(self):
         with app.app_context():
             # create all database tables

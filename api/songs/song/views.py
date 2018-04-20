@@ -23,7 +23,6 @@ class SongsListView(Resource):
                 response = {'message':'Song successfully created'}
                 return make_response(jsonify(response), 201)
             return make_response(jsonify({'message': user_id}),401)
-        return make_response(jsonify({'message': 'No token provided login to get a token'}),401)
 
     def get(self):
         auth_header = request.headers.get('Authorization')
@@ -45,7 +44,6 @@ class SongsListView(Resource):
                 response={'song_items':items}
                 return make_response(jsonify(response), 200)
             return make_response(jsonify({'message': user_id}),401)
-        return make_response(jsonify({'message': 'No token provided login to get a token'}),401)
 
 class SongDetailsView(Resource):
     """song details"""
@@ -71,7 +69,6 @@ class SongDetailsView(Resource):
                 }
                 return make_response(jsonify(response), 200)
             return make_response(jsonify({'message': user_id}),401)
-        return make_response(jsonify({'message': 'No token provided login to get a token'}),401)
 
     def delete(self, song_id):
         auth_header = request.headers.get('Authorization')
@@ -91,7 +88,6 @@ class SongDetailsView(Resource):
                     'message':'Song successfully deleted'
                 }), 200)
             return make_response(jsonify({'message': user_id}),401)
-        return make_response(jsonify({'message': 'No token provided login to get a token'}),401)
 
     @use_args(songs_args, locations={'json', 'form'})
     def put(self, args, song_id):
@@ -119,5 +115,4 @@ class SongDetailsView(Resource):
                 }
                 return make_response(jsonify(response), 201)
             return make_response(jsonify({'message': user_id}),401)
-        return make_response(jsonify({'message': 'No token provided login to get a token'}),401)
 
