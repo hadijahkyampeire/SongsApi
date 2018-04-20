@@ -8,17 +8,18 @@ class SongsListView(Resource):
     """songs view"""
     @use_args(songs_args, locations={'json', 'form'})
     def post(self, args):
-        auth_header = request.headers.get('Authorization')
+        auth_header = request.headers.get('Authorization', None)
         if auth_header is None:
             return make_response(jsonify({"message": "No token, please provide a token"}), 401)
         access_token = auth_header.split(" ")[1]
         if access_token:
             user_id = User.decode_token(access_token)
-            if not isinstance(user_id, str):
+            if not isinstance(user_id, str): 
                 new_song=Songs(
                     title=args['title'],
                     artist=args['artist']
                 )
+                new_song.created_by = user_id
                 new_song.save()
                 response = {'message':'Song successfully created'}
                 return make_response(jsonify(response), 201)
@@ -32,13 +33,14 @@ class SongsListView(Resource):
         if access_token:
             user_id = User.decode_token(access_token)
             if not isinstance(user_id, str):
-                songs = Songs.query.all()
+                songs = Songs.query.filter_by(created_by=user_id)
                 items=[]
                 for song in songs:
                     song_data={}
                     song_data['id']=song.id
                     song_data['title']=song.title
                     song_data['artist']=song.artist
+                    song_data['created_by']=song.created_by
                     items.append(song_data)
 
                 response={'song_items':items}
@@ -55,7 +57,7 @@ class SongDetailsView(Resource):
         if access_token:
             user_id = User.decode_token(access_token)
             if not isinstance(user_id, str):
-                song= Songs.query.filter_by(id=song_id).first()
+                song= Songs.query.filter_by(id=song_id, created_by=user_id).first()
                 if not song:
                     return make_response(jsonify({
                         'message':'no song found by id'
