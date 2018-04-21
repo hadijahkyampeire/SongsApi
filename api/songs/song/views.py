@@ -80,7 +80,7 @@ class SongDetailsView(Resource):
         if access_token:
             user_id = User.decode_token(access_token)
             if not isinstance(user_id, str):
-                song = Songs.query.filter_by(id=song_id).first()
+                song = Songs.query.filter_by(id=song_id, created_by=user_id).first()
                 if not song:
                     return make_response(jsonify({
                         'message':'no song found by id'
@@ -100,7 +100,7 @@ class SongDetailsView(Resource):
         if access_token:
             user_id = User.decode_token(access_token)
             if not isinstance(user_id, str):
-                song = Songs.query.filter_by(id=song_id).first()
+                song = Songs.query.filter_by(id=song_id, created_by=user_id).first()
                 if not song:
                     return make_response(jsonify({
                         'message':'no song found by id'
