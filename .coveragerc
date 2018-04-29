@@ -27,5 +27,6 @@ omit =
       *api/config.py*
       *app/models.py*
       *tests/*
+      *html/*
 
        

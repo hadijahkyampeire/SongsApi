@@ -69,9 +69,9 @@ class SongsTestCase(unittest.TestCase):
         result = self.login_user()
         # obtain the access token
         access_token = json.loads(result.data.decode())['access_token']
-        result1 = self.client.post('/song/songs',headers=dict(Authorization="Bearer " + access_token), data=self.song)
+        result = self.client.post('/song/songs',headers=dict(Authorization="Bearer " + access_token), data=self.song)
         new_data = {'title':'kiwani', 'artist':'bobi'}
-        result2 = self.client.post('/song/songs',headers=dict(Authorization="Bearer " + access_token), data=new_data)
+        result2 = self.client.put('/song/songs/1',headers=dict(Authorization="Bearer " + access_token), data=new_data)
         self.assertEqual(result2.status_code, 201)
 
     def test_song_can_be_deleted(self):
@@ -145,6 +145,57 @@ class SongsTestCase(unittest.TestCase):
         result1 = self.client.post('/song/songs', data=self.song)
         result = self.client.delete('/song/songs/1')
         self.assertEqual(result.status_code, 401)
+
+    def test_user_cannot_add_songs_with_invalid_token(self):
+        """Test APi handles error when posting with invalid token"""
+        access_token="zbncymk"
+        result = self.client.post('/song/songs',
+            headers=dict(Authorization="Bearer " + access_token),
+             data=self.song)
+        self.assertEqual(result.status_code, 401)
+
+    def test_user_cannot_edit_songs_with_invalid_token(self):
+        """Test APi handles error when editing with invalid token"""
+        access_token="zbncymk"
+        result = self.client.post('/song/songs',
+            headers=dict(Authorization="Bearer " + access_token),
+             data=self.song)
+        new_song={"title":"one step at a time", "artist":"benyonce"}
+        result = self.client.put('/song/songs/1',
+            headers=dict(Authorization="Bearer " + access_token),
+             data=new_song)
+        self.assertEqual(result.status_code, 401)
+
+    def test_user_cannot_get_one_songs_with_invalid_token(self):
+        """Test APi handles error when viewing one song with invalid token"""
+        access_token="zbncymk"
+        result = self.client.post('/song/songs',
+            headers=dict(Authorization="Bearer " + access_token),
+             data=self.song)
+        result = self.client.get('/song/songs',
+            headers=dict(Authorization="Bearer " + access_token))
+        self.assertEqual(result.status_code, 401)
+
+    def test_user_cannot_get_songs_with_invalid_token(self):
+        """Test APi handles error when viewing with invalid token"""
+        access_token="zbncymk"
+        result = self.client.post('/song/songs',
+            headers=dict(Authorization="Bearer " + access_token),
+             data=self.song)
+        result = self.client.get('/song/songs/1',
+            headers=dict(Authorization="Bearer " + access_token))
+        self.assertEqual(result.status_code, 401)
+
+    def test_user_cannot_delete_songs_with_invalid_token(self):
+        """Test APi handles error when deleting with invalid token"""
+        access_token="zbncymk"
+        result = self.client.post('/song/songs',
+            headers=dict(Authorization="Bearer " + access_token),
+             data=self.song)
+        result = self.client.delete('/song/songs/1',
+            headers=dict(Authorization="Bearer " + access_token))
+        self.assertEqual(result.status_code, 401)
+
     def tearDown(self):
         with app.app_context():
             # create all database tables
